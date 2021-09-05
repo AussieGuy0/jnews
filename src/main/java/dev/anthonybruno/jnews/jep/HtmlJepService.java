@@ -1,4 +1,4 @@
-package dev.anthonybruno.jep;
+package dev.anthonybruno.jnews.jep;
 
 import org.jetbrains.annotations.Nullable;
 import org.jsoup.Jsoup;
@@ -8,8 +8,7 @@ import java.net.URI;
 import java.util.List;
 
 public class HtmlJepService implements JepService {
-
-    private static final URI JEP_URL = URI.create("https://openjdk.java.net/jeps/");
+    private static final URI JEP_URL = URI.create("https://openjdk.java.net/jeps/0");
 
     private final HtmlJepClient htmlJepClient;
 

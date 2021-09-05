@@ -1,4 +1,4 @@
-package dev.anthonybruno.jep;
+package dev.anthonybruno.jnews.jep;
 
 import java.net.URI;
 

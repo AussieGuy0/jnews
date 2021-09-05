@@ -1,4 +1,4 @@
-package dev.anthonybruno.jep;
+package dev.anthonybruno.jnews.jep;
 
 import java.io.IOException;
 import java.net.URI;
@@ -7,7 +7,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class DefaultHtmlJepClient implements HtmlJepClient {
-
     private final HttpClient httpClient;
 
     public DefaultHtmlJepClient(HttpClient httpClient) {

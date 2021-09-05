@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>dev.anthonybruno.jep</groupId>
-    <artifactId>jep-rss</artifactId>
+    <groupId>dev.anthonybruno.jnews</groupId>
+    <artifactId>jnews</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -33,6 +33,11 @@
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
             <version>1.14.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.redouane59.twitter</groupId>
+            <artifactId>twittered</artifactId>
+            <version>1.26</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
