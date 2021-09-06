@@ -12,7 +12,7 @@ import dev.anthonybruno.jnews.util.SystemPropertyAccessor;
 
 import java.net.http.HttpClient;
 import java.nio.file.Path;
-import java.util.List;
+import java.util.ArrayList;
 
 public class Start {
     public static void main(String[] args) {
@@ -24,10 +24,10 @@ public class Start {
             twitterClient = tweet -> null;
         } else {
             twitterClient = TwitteredTwitterClient.create(TwitterCredentials.builder()
-                    .accessToken(propertyAccessor.get("jnews.twitter.access.token"))
-                    .accessTokenSecret(propertyAccessor.get("jnews.twitter.access.token.secret"))
-                    .apiKey(propertyAccessor.get("jnews.twitter.api.key"))
-                    .apiSecretKey(propertyAccessor.get("jnews.twitter.api.secret.key"))
+                    .accessToken(propertyAccessor.getNonNull("jnews.twitter.access.token"))
+                    .accessTokenSecret(propertyAccessor.getNonNull("jnews.twitter.access.token.secret"))
+                    .apiKey(propertyAccessor.getNonNull("jnews.twitter.api.key"))
+                    .apiSecretKey(propertyAccessor.getNonNull("jnews.twitter.api.secret.key"))
                     .build());
 
         }
@@ -36,7 +36,12 @@ public class Start {
     }
 
     private static PropertyAccessor propertyAccessor() {
-        var filePropertyAccessor = FilePropertyAccessor.from(JepChanges.class.getResourceAsStream("/app.properties"));
-        return new AggregatePropertyAccessor(List.of(filePropertyAccessor, new SystemPropertyAccessor()));
+        var accessors = new ArrayList<PropertyAccessor>();
+        var propertiesStream = JepChanges.class.getResourceAsStream("/app.properties");
+        if (propertiesStream != null) {
+            accessors.add(FilePropertyAccessor.from(propertiesStream));
+        }
+        accessors.add(new SystemPropertyAccessor());
+        return new AggregatePropertyAccessor(accessors);
     }
 }

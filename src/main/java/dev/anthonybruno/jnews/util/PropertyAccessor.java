@@ -14,4 +14,12 @@ public interface PropertyAccessor {
         }
         return fallback;
     }
+
+    default String getNonNull(String propertyName) {
+        var value = get(propertyName);
+        if (value == null) {
+            throw new RuntimeException("Property '" + propertyName + "' missing!");
+        }
+        return value;
+    }
 }
