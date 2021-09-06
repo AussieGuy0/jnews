@@ -31,7 +31,8 @@ public class Start {
                     .build());
 
         }
-        var jepChanges = new JepChanges(jepService, twitterClient, Path.of("data"));
+        var dataDir = propertyAccessor.getOrElse("jnews.data.dir", "data");
+        var jepChanges = new JepChanges(jepService, twitterClient, Path.of(dataDir));
         jepChanges.process();
     }
 
