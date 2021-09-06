@@ -1,18 +1,12 @@
 package dev.anthonybruno.jnews;
 
-import com.github.redouane59.twitter.signature.TwitterCredentials;
-import dev.anthonybruno.jnews.jep.DefaultHtmlJepClient;
-import dev.anthonybruno.jnews.jep.HtmlJepService;
 import dev.anthonybruno.jnews.jep.Jep;
 import dev.anthonybruno.jnews.jep.JepService;
 import dev.anthonybruno.jnews.twitter.TwitterClient;
-import dev.anthonybruno.jnews.twitter.TwitteredTwitterClient;
-import dev.anthonybruno.jnews.util.PropertiesUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.net.http.HttpClient;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -50,10 +44,10 @@ public class JepChanges {
             log.info("New JEP: {} ", jep);
             try {
                 Files.writeString(filePath, "placeholder");
+                newJeps.add(jep);
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                log.error("Could not write JEP {} to resourceDirectory", jep.number(), e);
             }
-            newJeps.add(jep);
         }
         log.info("{} new JEPs", newJeps.size());
         return Collections.unmodifiableList(newJeps);
@@ -73,18 +67,5 @@ public class JepChanges {
 
     private static String toFileName(Jep jep) {
         return jep.number() + ".txt";
-    }
-
-    public static void main(String[] args) {
-        var jepService = new HtmlJepService(new DefaultHtmlJepClient(HttpClient.newHttpClient()));
-        var properties = PropertiesUtil.readProperties(JepChanges.class.getResourceAsStream("/app.properties"));
-        var twitterClient = TwitteredTwitterClient.create(TwitterCredentials.builder()
-                .accessToken(properties.getProperty("dev.anthonybruno.jnews.twitter.access.token"))
-                .accessTokenSecret(properties.getProperty("dev.anthonybruno.jnews.twitter.access.token.secret"))
-                .apiKey(properties.getProperty("dev.anthonybruno.jnews.twitter.api.key"))
-                .apiSecretKey(properties.getProperty("dev.anthonybruno.jnews.twitter.api.secret.key"))
-                .build());
-        var jepChanges = new JepChanges(jepService, twitterClient, Path.of("data"));
-        jepChanges.process();
     }
 }
