@@ -15,6 +15,8 @@ import org.slf4j.LoggerFactory;
 import java.net.http.HttpClient;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class Start {
     private static final Logger log = LoggerFactory.getLogger(Start.class);
@@ -35,10 +37,13 @@ public class Start {
                     .build());
 
         }
-        var dataDir = propertyAccessor.getOrElse("jnews.data.dir", "data");
-        log.info("Data directory set as '{}'", dataDir);
-        var jepChanges = new JepChanges(jepService, twitterClient, Path.of(dataDir));
-        jepChanges.process();
+        var scheduler = Executors.newScheduledThreadPool(1);
+        scheduler.scheduleAtFixedRate(() -> {
+            var dataDir = propertyAccessor.getOrElse("jnews.data.dir", "data");
+            log.info("Data directory set as '{}'", dataDir);
+            var jepChanges = new JepChanges(jepService, twitterClient, Path.of(dataDir));
+            jepChanges.process();
+        }, 10, 10, TimeUnit.SECONDS);
     }
 
     private static PropertyAccessor propertyAccessor() {
