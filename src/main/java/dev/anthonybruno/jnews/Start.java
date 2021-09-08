@@ -8,7 +8,7 @@ import dev.anthonybruno.jnews.twitter.TwitteredTwitterClient;
 import dev.anthonybruno.jnews.util.AggregatePropertyAccessor;
 import dev.anthonybruno.jnews.util.FilePropertyAccessor;
 import dev.anthonybruno.jnews.util.PropertyAccessor;
-import dev.anthonybruno.jnews.util.SystemPropertyAccessor;
+import dev.anthonybruno.jnews.util.EnvVarPropertyAccessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,7 +48,7 @@ public class Start {
 
     private static PropertyAccessor propertyAccessor() {
         var accessors = new ArrayList<PropertyAccessor>();
-        accessors.add(new SystemPropertyAccessor());
+        accessors.add(new EnvVarPropertyAccessor());
         var propertiesStream = JepChanges.class.getResourceAsStream("/app.properties");
         if (propertiesStream != null) {
             accessors.add(FilePropertyAccessor.from(propertiesStream));

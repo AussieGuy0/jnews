@@ -2,18 +2,18 @@ package dev.anthonybruno.jnews.util;
 
 import org.jetbrains.annotations.Nullable;
 
-public class SystemPropertyAccessor implements PropertyAccessor {
+public class EnvVarPropertyAccessor implements PropertyAccessor {
 
     @Override
     public @Nullable String get(String propertyName) {
         var normalisedPropertyName = normalisePropertyName(propertyName);
-        return System.getProperty(normalisedPropertyName);
+        return System.getenv(normalisedPropertyName);
     }
 
     @Override
     public String getNonNull(String propertyName) {
         var normalisedPropertyName = normalisePropertyName(propertyName);
-        var value = System.getProperty(normalisedPropertyName);
+        var value = System.getenv(normalisedPropertyName);
         if (value == null) {
             throw new RuntimeException("System property '" + normalisedPropertyName + "' missing!");
         }
