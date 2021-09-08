@@ -6,9 +6,9 @@ import dev.anthonybruno.jnews.jep.HtmlJepService;
 import dev.anthonybruno.jnews.twitter.TwitterClient;
 import dev.anthonybruno.jnews.twitter.TwitteredTwitterClient;
 import dev.anthonybruno.jnews.util.AggregatePropertyAccessor;
+import dev.anthonybruno.jnews.util.EnvVarPropertyAccessor;
 import dev.anthonybruno.jnews.util.FilePropertyAccessor;
 import dev.anthonybruno.jnews.util.PropertyAccessor;
-import dev.anthonybruno.jnews.util.EnvVarPropertyAccessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,13 +37,11 @@ public class Start {
                     .build());
 
         }
+        var dataDir = propertyAccessor.getOrElse("jnews.data.dir", "data");
+        log.info("Data directory set as '{}'", dataDir);
+        var jepChanges = new JepChanges(jepService, twitterClient, Path.of(dataDir));
         var scheduler = Executors.newScheduledThreadPool(1);
-        scheduler.scheduleAtFixedRate(() -> {
-            var dataDir = propertyAccessor.getOrElse("jnews.data.dir", "data");
-            log.info("Data directory set as '{}'", dataDir);
-            var jepChanges = new JepChanges(jepService, twitterClient, Path.of(dataDir));
-            jepChanges.process();
-        }, 10, 10, TimeUnit.SECONDS);
+        scheduler.scheduleAtFixedRate(jepChanges::process, 0, 24, TimeUnit.HOURS);
     }
 
     private static PropertyAccessor propertyAccessor() {
