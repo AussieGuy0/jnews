@@ -46,7 +46,7 @@ public class JepChanges {
                 Files.writeString(filePath, "placeholder");
                 newJeps.add(jep);
             } catch (IOException e) {
-                log.error("Could not write JEP {} to resourceDirectory", jep.number(), e);
+                log.error("Could not write JEP {} to {}", jep.number(), resourceDirectory, e);
             }
         }
         log.info("{} new JEPs", newJeps.size());
