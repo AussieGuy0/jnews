@@ -19,7 +19,7 @@ public class TwitteredTwitterClient implements TwitterClient {
     public TweetId postTweet(CreateTweet toPost) {
         var tweet = twitterClient.postTweet(toPost.body());
         if (tweet.getId() == null) {
-            return null;
+            throw new TwitterException("Could not post tweet");
         }
         return new TweetId(tweet.getId());
     }

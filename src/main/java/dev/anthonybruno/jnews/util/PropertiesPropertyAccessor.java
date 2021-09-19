@@ -6,21 +6,21 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public class FilePropertyAccessor implements PropertyAccessor {
+public class PropertiesPropertyAccessor implements PropertyAccessor {
     private final Properties properties;
 
-    public FilePropertyAccessor(Properties properties) {
+    public PropertiesPropertyAccessor(Properties properties) {
         this.properties = properties;
     }
 
-    public static FilePropertyAccessor from(InputStream inputStream) {
+    public static PropertiesPropertyAccessor from(InputStream inputStream) {
         Properties properties = new Properties();
         try {
             properties.load(inputStream);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return new FilePropertyAccessor(properties);
+        return new PropertiesPropertyAccessor(properties);
     }
 
     @Override
